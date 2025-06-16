@@ -1,2 +1,2 @@
-# os-docker-compose-exercises.github.io
+# os-docker-compose-exercises
 docker-compose
