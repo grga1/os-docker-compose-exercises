@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+  <meta charset="UTF-8">
+  <title>Docker Compose со Проверка</title>
+  <style>
+    body { font-family: monospace; max-width: 1000px; margin: auto; padding: 20px; }
+    pre { background: #f5f5f5; padding: 10px; border-left: 4px solid #007acc; }
+    select { font-family: monospace; font-size: 1em; }
+    .correct { color: green; font-weight: bold; }
+    .wrong { color: red; font-weight: bold; }
+  </style>
+</head>
+<body>
+<h1>Docker Compose – Вежби со dropdown и проверка</h1>
+<h2>Задача 1</h2><pre>
+version: '3.8'
+
+services:
+  java-app:
+    build:
+      context: <select id='context_1'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='./src'>./src</option>
+<option value='./data'>./data</option>
+<option value='./java-app'>./java-app</option>
+</select>
+      dockerfile: <select id='dockerfile_1'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='Dockerfile.java'>Dockerfile.java</option>
+<option value='Dockerfile'>Dockerfile</option>
+<option value='Dockerfile-app'>Dockerfile-app</option>
+</select>
+    ports:
+      - <select id='port_1'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='8080:80'>8080:80</option>
+<option value='80:8000'>80:8000</option>
+<option value='8000:80'>8000:80</option>
+</select>
+    networks:
+      - <select id='network_1'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='backend'>backend</option>
+<option value='net'>net</option>
+<option value='private-network'>private-network</option>
+</select>
+    depends_on:
+      - db
+
+  db:
+    image: <select id='image_1'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='mysql:latest'>mysql:latest</option>
+<option value='mysql:8.4'>mysql:8.4</option>
+<option value='postgres:15'>postgres:15</option>
+</select>
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: <select id='MYSQL_DATABASE_1'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='mydatabase'>mydatabase</option>
+<option value='users'>users</option>
+<option value='testdb'>testdb</option>
+<option value='projectdb'>projectdb</option>
+</select>
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: <select id='MYSQL_PASSWORD_1'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='mypassword'>mypassword</option>
+<option value='123456'>123456</option>
+<option value='admin'>admin</option>
+<option value='pass123'>pass123</option>
+</select>
+    ports:
+      - "3306:3306"
+    volumes:
+      - database:/var/lib/mysql
+      - ./data/start.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - <select id='network2_1'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='private-network'>private-network</option>
+<option value='net'>net</option>
+</select>
+
+networks:
+  private-network:
+    driver: <select id='driver_1'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='overlay'>overlay</option>
+<option value='bridge'>bridge</option>
+</select>
+
+volumes:
+  <select id='volumeDef_1'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='database'>database</option>
+<option value='data'>data</option>
+</select>
+</pre>
+<button onclick='check(1)'>Провери одговор</button><p id='result_1'></p><hr>
+<h2>Задача 2</h2><pre>
+version: '3.8'
+
+services:
+  java-app:
+    build:
+      context: ./java-app
+      dockerfile: Dockerfile-app
+    ports:
+      - <select id='port_2'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='8000:80'>8000:80</option>
+<option value='80:8000'>80:8000</option>
+<option value='8080:80'>8080:80</option>
+</select>
+    networks:
+      - private-network
+    depends_on:
+      - <select id='depends_2'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='postgres'>postgres</option>
+<option value='mysql'>mysql</option>
+<option value='db'>db</option>
+</select>
+
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: <select id='MYSQL_DATABASE_2'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='projectdb'>projectdb</option>
+<option value='mydatabase'>mydatabase</option>
+<option value='testdb'>testdb</option>
+<option value='users'>users</option>
+</select>
+      MYSQL_USER: <select id='MYSQL_USER_2'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='admin'>admin</option>
+<option value='guest'>guest</option>
+<option value='root'>root</option>
+<option value='myuser'>myuser</option>
+</select>
+      MYSQL_PASSWORD: <select id='MYSQL_PASSWORD_2'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='pass123'>pass123</option>
+<option value='admin'>admin</option>
+<option value='mypassword'>mypassword</option>
+<option value='123456'>123456</option>
+</select>
+    ports:
+      - "3306:3306"
+    volumes:
+      - <select id='volume1_2'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='./data:/var/lib/mysql'>./data:/var/lib/mysql</option>
+<option value='database:/var/lib/mysql'>database:/var/lib/mysql</option>
+</select>
+      - <select id='volume2_2'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='database:/docker-entrypoint-initdb.d/init.sql'>database:/docker-entrypoint-initdb.d/init.sql</option>
+<option value='./data/start.sql:/docker-entrypoint-initdb.d/init.sql'>./data/start.sql:/docker-entrypoint-initdb.d/init.sql</option>
+</select>
+    networks:
+      - <select id='network2_2'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='net'>net</option>
+<option value='private-network'>private-network</option>
+</select>
+
+networks:
+  private-network:
+    driver: <select id='driver_2'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='overlay'>overlay</option>
+<option value='bridge'>bridge</option>
+</select>
+
+volumes:
+  <select id='volumeDef_2'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='database'>database</option>
+<option value='data'>data</option>
+</select>
+</pre>
+<button onclick='check(2)'>Провери одговор</button><p id='result_2'></p><hr>
+<h2>Задача 3</h2><pre>
+version: '3.8'
+
+services:
+  java-app:
+    build:
+      context: <select id='context_3'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='./src'>./src</option>
+<option value='./java-app'>./java-app</option>
+<option value='./data'>./data</option>
+</select>
+      dockerfile: <select id='dockerfile_3'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='Dockerfile.java'>Dockerfile.java</option>
+<option value='Dockerfile'>Dockerfile</option>
+<option value='Dockerfile-app'>Dockerfile-app</option>
+</select>
+    ports:
+      - <select id='port_3'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='80:8000'>80:8000</option>
+<option value='8080:80'>8080:80</option>
+<option value='8000:80'>8000:80</option>
+</select>
+    networks:
+      - <select id='network_3'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='backend'>backend</option>
+<option value='net'>net</option>
+<option value='private-network'>private-network</option>
+</select>
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: <select id='MYSQL_ROOT_PASSWORD_3'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='123456'>123456</option>
+<option value='rootpassword'>rootpassword</option>
+<option value='admin'>admin</option>
+<option value='toor'>toor</option>
+</select>
+      MYSQL_DATABASE: <select id='MYSQL_DATABASE_3'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='mydatabase'>mydatabase</option>
+<option value='testdb'>testdb</option>
+<option value='projectdb'>projectdb</option>
+<option value='users'>users</option>
+</select>
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: <select id='MYSQL_PASSWORD_3'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='123456'>123456</option>
+<option value='admin'>admin</option>
+<option value='pass123'>pass123</option>
+<option value='mypassword'>mypassword</option>
+</select>
+    ports:
+      - "3306:3306"
+    volumes:
+      - <select id='volume1_3'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='database:/var/lib/mysql'>database:/var/lib/mysql</option>
+<option value='./data:/var/lib/mysql'>./data:/var/lib/mysql</option>
+</select>
+      - <select id='volume2_3'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='database:/docker-entrypoint-initdb.d/init.sql'>database:/docker-entrypoint-initdb.d/init.sql</option>
+<option value='./data/start.sql:/docker-entrypoint-initdb.d/init.sql'>./data/start.sql:/docker-entrypoint-initdb.d/init.sql</option>
+</select>
+    networks:
+      - <select id='network2_3'>
+<option value='' selected disabled>-- одбери --</option>
+<option value='private-network'>private-network</option>
+<option value='net'>net</option>
+</select>
+
+networks:
+  private-network:
+    driver: bridge
+
+volumes:
+  database
+</pre>
+<button onclick='check(3)'>Провери одговор</button><p id='result_3'></p><hr>
+
+<script>
+const correct = {
+  context: "./java-app",
+  dockerfile: "Dockerfile-app",
+  port: "80:8000",
+  network: "private-network",
+  depends: "db",
+  image: "mysql:8.4",
+  volume1: "database:/var/lib/mysql",
+  volume2: "./data/start.sql:/docker-entrypoint-initdb.d/init.sql",
+  network2: "private-network",
+  driver: "bridge",
+  volumeDef: "database",
+  MYSQL_ROOT_PASSWORD: "rootpassword",
+  MYSQL_DATABASE: "mydatabase",
+  MYSQL_USER: "myuser",
+  MYSQL_PASSWORD: "mypassword"
+};
+
+function check(idx) {
+  let result = '';
+  let allCorrect = true;
+  for (const key in correct) {
+    const sel = document.getElementById(key + '_' + idx);
+    if (sel) {
+      if (sel.value === correct[key]) {
+        result += `✅ ${key} е точно!<br>`;
+      } else {
+        result += `❌ ${key} е погрешно (ти избра "${sel.value || 'празно'}")<br>`;
+        allCorrect = false;
+      }
+    }
+  }
+  document.getElementById("result_" + idx).innerHTML = allCorrect
+    ? '<p class="correct">Сѐ е точно! Браво! 👏</p>'
+    : '<p class="wrong">Има грешки:</p>' + result;
+}
+</script>
+</body>
+</html>
